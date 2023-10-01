@@ -17,16 +17,9 @@ export const passwordStrength = (
     const isStrong =
         length >= 16 && poorPassword && weakPassword && strongPassword;
     const isGood =
-        length >= 12 &&
-        length <= 15 &&
-        poorPassword &&
-        weakPassword &&
-        strongPassword;
+        length >= 12 && (poorPassword || weakPassword || strongPassword);
     const isWeak =
-        length >= 8 &&
-        length <= 11 &&
-        poorPassword &&
-        (weakPassword || strongPassword);
+        length >= 8 && (poorPassword || weakPassword || strongPassword);
     const isPoor = length <= 7;
 
     setPoorPassword(isPoor);

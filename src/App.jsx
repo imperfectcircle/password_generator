@@ -8,6 +8,12 @@ import Footer from './Components/Footer';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { IoRefreshCircleOutline } from 'react-icons/io5';
+import {
+    BiCheckShield,
+    BiShieldX,
+    BiShieldPlus,
+    BiShieldMinus,
+} from 'react-icons/bi';
 import { generatePassword } from './Utilities/generatePassword';
 import { passwordStrength } from './Utilities/passwordStrength';
 import { setNotification } from './Utilities/setNotification';
@@ -78,9 +84,29 @@ export default function App() {
                 <h1 className="mt-20 text-3xl font-bold md:text-6xl">
                     Generatore di Password Sicure
                 </h1>
-                <h2 className="pb-16 pt-10 text-xl md:text-4xl">
+                <h2 className="pb-5 pt-10 text-xl md:text-4xl">
                     Crea una password sicura, unica e randomica.
                 </h2>
+
+                {strongPassword ? (
+                    <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
+                        <BiCheckShield className="text-emerald-700" /> Sicura
+                    </h3>
+                ) : goodPassword ? (
+                    <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
+                        <BiShieldPlus className="text-emerald-400" /> Buona
+                    </h3>
+                ) : weakPassword ? (
+                    <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
+                        <BiShieldMinus className="text-orange-500" /> Debole
+                    </h3>
+                ) : (
+                    poorPassword && (
+                        <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
+                            <BiShieldX className="text-red-600" /> Non Sicura
+                        </h3>
+                    )
+                )}
 
                 <div className="flex flex-col items-center space-y-3 md:flex-row md:space-x-3 md:space-y-0">
                     <InputText
@@ -92,19 +118,19 @@ export default function App() {
                     />
                     <div className="relative w-full">
                         <input
-                            className={`w-full rounded-lg p-5 text-2xl font-bold shadow-lg 
-                        ${
-                            strongPassword
-                                ? 'bg-emerald-700 text-white'
-                                : goodPassword
-                                ? 'bg-emerald-400 text-white'
-                                : weakPassword
-                                ? 'bg-orange-500 text-white'
-                                : poorPassword
-                                ? 'bg-red-600 text-white'
-                                : 'bg-gray-300 text-black'
-                        }
-                    `}
+                            className={`w-full rounded-lg p-5 text-2xl font-bold shadow-lg
+                                ${
+                                    strongPassword
+                                        ? 'bg-emerald-700 text-white'
+                                        : goodPassword
+                                        ? 'bg-emerald-400 text-white'
+                                        : weakPassword
+                                        ? 'bg-orange-500 text-white'
+                                        : poorPassword
+                                        ? 'bg-red-600 text-white'
+                                        : 'bg-gray-300 text-black'
+                                }
+                            `}
                             type="text"
                             ref={inputRef}
                             value={password}
