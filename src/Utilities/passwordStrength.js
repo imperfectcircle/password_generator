@@ -14,16 +14,14 @@ export const passwordStrength = (
     const weakPassword = weakRegExp.test(password);
     const strongPassword = strongRegExp.test(password);
 
-    const isStrong =
-        length >= 16 && poorPassword && weakPassword && strongPassword;
-    const isGood =
-        length >= 12 && (poorPassword || weakPassword || strongPassword);
-    const isWeak =
-        length >= 8 && (poorPassword || weakPassword || strongPassword);
-    const isPoor = length <= 7;
-
-    setPoorPassword(isPoor);
-    setWeakPassword(isWeak);
-    setGoodPassword(isGood);
-    setStrongPassword(isStrong);
+    setPoorPassword(length < 8);
+    setWeakPassword(
+        length >= 8 && poorPassword && (weakPassword || strongPassword),
+    );
+    setGoodPassword(
+        length >= 12 && poorPassword && (weakPassword || strongPassword),
+    );
+    setStrongPassword(
+        length >= 16 && poorPassword && weakPassword && strongPassword,
+    );
 };
