@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet-async';
 import Footer from './Components/Footer';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { IoRefreshCircleOutline } from 'react-icons/io5';
 import { generatePassword } from './Utilities/generatePassword';
 import { passwordStrength } from './Utilities/passwordStrength';
 import { setNotification } from './Utilities/setNotification';
@@ -89,8 +90,9 @@ export default function App() {
                         value={length}
                         onChange={(e) => setLength(+e.target.value)}
                     />
-                    <input
-                        className={`w-full rounded-lg p-5 text-2xl font-bold shadow-lg 
+                    <div className="relative w-full">
+                        <input
+                            className={`w-full rounded-lg p-5 text-2xl font-bold shadow-lg 
                         ${
                             strongPassword
                                 ? 'bg-emerald-700 text-white'
@@ -103,11 +105,34 @@ export default function App() {
                                 : 'bg-gray-300 text-black'
                         }
                     `}
-                        type="text"
-                        ref={inputRef}
-                        value={password}
-                        readOnly
-                    />
+                            type="text"
+                            ref={inputRef}
+                            value={password}
+                            readOnly
+                        />
+                        <IoRefreshCircleOutline
+                            onClick={() => {
+                                generatePassword(
+                                    length,
+                                    includeSymbols,
+                                    customSymbols,
+                                    includeUppercase,
+                                    includeLowercase,
+                                    includeNumbers,
+                                    setPassword,
+                                );
+                                passwordStrength(
+                                    password,
+                                    length,
+                                    setPoorPassword,
+                                    setWeakPassword,
+                                    setGoodPassword,
+                                    setStrongPassword,
+                                );
+                            }}
+                            className="absolute right-[4%] top-[10%] cursor-pointer text-6xl text-white transition-all duration-150 hover:text-amber-400 "
+                        />
+                    </div>
                     <button
                         className="rounded-lg border-2 border-slate-400 bg-slate-200 px-6 py-5 text-xl shadow-lg transition-all duration-150 hover:bg-slate-300"
                         onClick={() => {
@@ -151,42 +176,18 @@ export default function App() {
                         />
                     </div>
                     <div className="flex items-center space-x-3">
-                        <InputCheckbox
-                            id="symbols"
-                            checked={includeSymbols}
-                            onChange={() => setIncludeSymbols(!includeSymbols)}
-                        />
                         <InputText
                             type="text"
                             id=""
                             value={customSymbols}
                             onChange={(e) => setCustomSymbols(e.target.value)}
                         />
+                        <InputCheckbox
+                            id="symbols"
+                            checked={includeSymbols}
+                            onChange={() => setIncludeSymbols(!includeSymbols)}
+                        />
                     </div>
-                    <button
-                        className="rounded-lg border-2 border-slate-400 bg-slate-200 px-6 py-5 text-xl shadow-lg transition-all duration-150 hover:bg-slate-300"
-                        onClick={() => {
-                            generatePassword(
-                                length,
-                                includeSymbols,
-                                customSymbols,
-                                includeUppercase,
-                                includeLowercase,
-                                includeNumbers,
-                                setPassword,
-                            );
-                            passwordStrength(
-                                password,
-                                length,
-                                setPoorPassword,
-                                setWeakPassword,
-                                setGoodPassword,
-                                setStrongPassword,
-                            );
-                        }}
-                    >
-                        Genera Password
-                    </button>
                 </div>
             </div>
             <div className=" mt-16 p-5 text-center md:mx-auto md:mt-32 md:w-2/3 md:p-10">

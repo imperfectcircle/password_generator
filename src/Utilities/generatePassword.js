@@ -28,6 +28,15 @@ export const generatePassword = (
         validChars += symbolChars;
     }
 
+    // Assicurati che almeno un simbolo sia incluso
+    if (includeSymbols) {
+        // Aggiungi almeno un simbolo alla password
+        const randomSymbolIndex = Math.floor(
+            Math.random() * symbolChars.length,
+        );
+        generatedPassword += symbolChars[randomSymbolIndex];
+    }
+
     // Genera la password
     for (let i = generatedPassword.length; i < length; i++) {
         const randomIndex = Math.floor(Math.random() * validChars.length);
