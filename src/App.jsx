@@ -26,10 +26,7 @@ export default function App() {
     const [includeLowercase, setIncludeLowercase] = useState(true);
     const [includeNumbers, setIncludeNumbers] = useState(true);
     const [includeSymbols, setIncludeSymbols] = useState(true);
-    const [poorPassword, setPoorPassword] = useState(false);
-    const [weakPassword, setWeakPassword] = useState(false);
-    const [goodPassword, setGoodPassword] = useState(false);
-    const [strongPassword, setStrongPassword] = useState(false);
+    const [strength, setStrength] = useState(0);
     const [customSymbols, setCustomSymbols] = useState('#?!@$%^&*-');
     const [notification, _setNotification] = useState('');
 
@@ -46,14 +43,7 @@ export default function App() {
             setPassword,
         );
         setPassword(initialPassword);
-        passwordStrength(
-            initialPassword,
-            length,
-            setPoorPassword,
-            setWeakPassword,
-            setGoodPassword,
-            setStrongPassword,
-        );
+        passwordStrength(initialPassword, length, setStrength);
     }, []);
 
     return (
@@ -88,22 +78,22 @@ export default function App() {
                     Crea una password sicura, unica e randomica.
                 </h2>
 
-                {strongPassword ? (
+                {length <= 7 ? (
+                    <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
+                        <BiShieldX className="text-red-600" /> Non Sicura
+                    </h3>
+                ) : strength === 8 ? (
                     <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
                         <BiCheckShield className="text-emerald-700" /> Sicura
                     </h3>
-                ) : goodPassword ? (
+                ) : strength === 6 ? (
                     <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
                         <BiShieldPlus className="text-emerald-400" /> Buona
                     </h3>
-                ) : weakPassword ? (
-                    <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
-                        <BiShieldMinus className="text-orange-500" /> Debole
-                    </h3>
                 ) : (
-                    poorPassword && (
+                    strength === 4 && (
                         <h3 className="flex items-center justify-center pb-16 pt-5 text-xl md:text-4xl">
-                            <BiShieldX className="text-red-600" /> Non Sicura
+                            <BiShieldMinus className="text-orange-500" /> Debole
                         </h3>
                     )
                 )}
@@ -120,15 +110,15 @@ export default function App() {
                         <input
                             className={`w-full rounded-lg p-5 text-2xl font-bold shadow-lg
                                 ${
-                                    strongPassword
-                                        ? 'bg-emerald-700 text-white'
-                                        : goodPassword
-                                        ? 'bg-emerald-400 text-white'
-                                        : weakPassword
-                                        ? 'bg-orange-500 text-white'
-                                        : poorPassword
+                                    length <= 7
                                         ? 'bg-red-600 text-white'
-                                        : 'bg-gray-300 text-black'
+                                        : strength === 8
+                                        ? 'bg-emerald-700 text-white'
+                                        : strength === 6
+                                        ? 'bg-emerald-400 text-white'
+                                        : strength === 4
+                                        ? 'bg-orange-500 text-white'
+                                        : ''
                                 }
                             `}
                             type="text"
@@ -147,14 +137,7 @@ export default function App() {
                                     includeNumbers,
                                     setPassword,
                                 );
-                                passwordStrength(
-                                    password,
-                                    length,
-                                    setPoorPassword,
-                                    setWeakPassword,
-                                    setGoodPassword,
-                                    setStrongPassword,
-                                );
+                                passwordStrength(password, length, setStrength);
                             }}
                             className="absolute right-[4%] top-[10%] cursor-pointer text-6xl text-white transition-all duration-150 hover:text-amber-400 "
                         />

@@ -1,27 +1,16 @@
-export const passwordStrength = (
-    password,
-    length,
-    setPoorPassword,
-    setWeakPassword,
-    setGoodPassword,
-    setStrongPassword,
-) => {
-    const poorRegExp = /[a-zA-Z]/;
-    const weakRegExp = /^(?=.*?[0-9]).*$/;
-    const strongRegExp = /^(?=.*?[#?!@$%^&*-]).*$/;
+export const passwordStrength = (password, length, setStrength) => {
+    let score = 0;
 
-    const poorPassword = poorRegExp.test(password);
-    const weakPassword = weakRegExp.test(password);
-    const strongPassword = strongRegExp.test(password);
+    const hasUpperCase = (password) => password.toLowerCase() != password;
+    const hasNumber = (password) => /\d/.test(password);
+    const hasSpecialChars = (password) =>
+        /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(password);
+    const hasLength = (length) => length >= 16;
 
-    setPoorPassword(length < 8);
-    setWeakPassword(
-        length >= 8 && poorPassword && (weakPassword || strongPassword),
-    );
-    setGoodPassword(
-        length >= 12 && poorPassword && (weakPassword || strongPassword),
-    );
-    setStrongPassword(
-        length >= 16 && poorPassword && weakPassword && strongPassword,
-    );
+    if (hasUpperCase(password)) score += 2;
+    if (hasNumber(password)) score += 2;
+    if (hasSpecialChars(password)) score += 2;
+    if (hasLength(length)) score += 2;
+
+    setStrength(score);
 };
